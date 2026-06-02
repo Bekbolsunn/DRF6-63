@@ -74,6 +74,9 @@ class ProductListCreateAPIView(ListCreateAPIView):
 
 
     def post(self, request, *args, **kwargs):
+        email = request.auth.get("email")
+        print("email", email)
+
         serializer = ProductValidateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -88,7 +91,8 @@ class ProductListCreateAPIView(ListCreateAPIView):
             title=title,
             description=description,
             price=price,
-            category=category
+            category=category,
+            owner_id=request.auth.get("user_id")
         )
 
         return Response(data=ProductSerializer(product).data,
