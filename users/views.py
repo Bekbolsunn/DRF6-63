@@ -72,6 +72,8 @@ class RegistrationAPIView(CreateAPIView):
                 user=user,
                 code=code
             )
+            from users.tasks import send_otp_email
+            send_otp_email.delay(code, email)
 
         return Response(
             status=status.HTTP_201_CREATED,
